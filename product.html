@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Sản phẩm - Hoàng Hoan</title>
+  <link rel="stylesheet" href="product.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<!-- menu -->
+  <header>
+    <div class="logo"> <img src="img/logo.png" alt="Logo Hoàng Hoan"> </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">TRANG CHỦ</a></li>
+        <li><a href="#">GIỚI THIỆU</a></li>
+        <li><a href="product.html">SẢN PHẨM</a></li>
+        <li><a href="#">LIÊN HỆ</a></li>
+        <li><a href="login.html">ĐĂNG NHẬP</a></li>
+      </ul>
+    </nav>
+  </header>
+
+<section class="featured-products">
+  <h2>TẤT CẢ SẢN PHẨM</h2>
+  <input type="text" id="searchInput" placeholder="Tìm sản phẩm..." style="padding: 10px; width: 80%; margin: 10px auto; display: block;">
+
+  <!-- Danh mục sản phẩm -->
+  <div id="productContainer"></div>
+</section>
+
+<section id="admin-tools" style="display: none; text-align:center; margin: 20px auto;">
+  <input type="file" id="uploadFile" style="display:none" accept="image/*">
+  <button onclick="addProduct()" style="padding: 10px 20px; background: #b68d40; color: white; border: none;">Thêm sản phẩm</button>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-left">
+      <h3 class="footer-title">CÔNG TY NỘI THẤT ABC</h3>
+      <div class="footer-info">
+        <span>📞 0123 456 789</span>
+        <span>📧 noithatabc@example.com</span>
+        <span>📍 123 Đường ABC, TP. Hồ Chí Minh</span>
+      </div>
+    </div>
+    <div class="footer-right">
+      <a href="#"><img src="img/facebook-icon.png" alt="Facebook"></a>
+      <a href="#"><img src="img/instagram-icon.png" alt="Instagram"></a>
+      <a href="#"><img src="img/mail-icon.png" alt="Email"></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const isAdmin = localStorage.getItem("admin") === "true";
+
+if (isAdmin) {
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".edit-button, .upload-input").forEach(el => el.style.display = "inline-block");
+    document.getElementById("admin-tools").style.display = "block";
+    document.querySelector(".admin-menu").style.display = "block";
+    document.getElementById("login-link").style.display = "none";
+  });
+}
+
+function logout() {
+  localStorage.removeItem("admin");
+  location.reload();
+}
+</script>
+
+<script>
+const categories = [
+  { id: "livingroom", label: "Phòng khách" },
+  { id: "bedroom", label: "Phòng ngủ" },
+  { id: "kitchen", label: "Phòng bếp" },
+  { id: "bathroom", label: "Phòng tắm" },
+  { id: "worship", label: "Phòng thờ" },
+  { id: "kids", label: "Trẻ em" },
+  { id: "stairs", label: "Cầu thang" },
+  { id: "office", label: "Văn phòng" }
+];
+
+const productContainer = document.getElementById("productContainer");
+categories.forEach(cat => {
+  const section = document.createElement("section");
+  section.className = "featured-products";
+  section.innerHTML = `
+    <h2>${cat.label}</h2>
+    <div class="product-list">
+      ${Array.from({ length: 4 }).map((_, i) => `
+        <div class="product-item" data-category="${cat.id}">
+          <img src="products/${cat.id}${i + 1}.jpg" alt="${cat.label} ${i + 1}">
+          <h3>Sản phẩm ${i + 1}</h3>
+          <div class="stars">★★★★☆</div>
+          <p class="price">${(i + 1) * 100}.000đ</p>
+          <p>Lượt bán: ${Math.floor(Math.random() * 100)}</p>
+          <button class="edit-button" style="display:none">Chỉnh sửa</button>
+        </div>`).join('')}
+    </div>
+    <div style="text-align: center; margin-top: 15px;">
+      <a href="${cat.id}.html" class="btn">Xem thêm</a>
+    </div>
+  `;
+  productContainer.appendChild(section);
+});
+</script>
+
+<script>
+  if (localStorage.getItem("admin") === "true") {
+    document.querySelector(".admin-menu").style.display = "block";
+    document.getElementById("login-link").style.display = "none";
+  }
+
+  function logout() {
+    localStorage.removeItem("admin");
+    location.reload();
+  }
+</script>
+
+</body>
+</html>
